@@ -190,6 +190,15 @@ section { padding: clamp(72px, 10vw, 128px) 0; }
 .lifts figcaption { margin-top: 12px; font-size: 15px; color: var(--muted); }
 .lifts figcaption b { color: var(--text); font-weight: 600; }
 
+/* Capturas de la app */
+.shots { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 3vw, 40px); align-items: start; }
+.shots figure { margin: 0; }
+.shots figure:nth-child(2) { margin-top: -32px; }
+.phone { border: 8px solid var(--s3); border-radius: 36px; overflow: hidden; background: var(--bg); }
+.phone img { width: 100%; height: auto; }
+.shots figcaption { margin-top: 16px; color: var(--muted); font-size: 15px; }
+.shots figcaption b { display: block; color: var(--text); font-weight: 600; font-size: 17px; }
+
 /* Precios */
 #precios { background: var(--s1); }
 .plans { display: grid; grid-template-columns: 1fr 1fr 1.08fr; gap: 16px; align-items: stretch; }
@@ -252,6 +261,12 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
   .steps li > ul { grid-column: 1; }
   .steps .n { font-size: 64px; }
   .quote-wrap, .lifts { grid-template-columns: 1fr; }
+  .shots {
+    display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+    margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter) 8px;
+  }
+  .shots figure { flex: 0 0 72%; scroll-snap-align: center; }
+  .shots figure:nth-child(2) { margin-top: 0; }
   .quote { grid-template-columns: 1fr; gap: 0; }
   .quote .mark { font-size: 90px; }
   body { font-size: 16px; }
@@ -439,6 +454,32 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
           <img src="img/peso-muerto.jpg" width="1024" height="682" loading="lazy" decoding="async"
                data-i18n-alt="deadAlt" alt="Atleta agarrando una barra cargada en el suelo antes de levantar un peso muerto">
           <figcaption data-i18n="deadCap"><b>Peso muerto</b> · 1 serie · al fallo</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="app" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display" data-i18n="appTitle">Así se ve<br><span class="volt">por dentro.</span></h2>
+        <p data-i18n="appBody">Capturas reales de la app. Sin adornos: la sesión de hoy, cuánto pesar y cuándo parar.</p>
+      </div>
+      <div class="shots">
+        <figure>
+          <div class="phone"><img src="img/app-bienvenida.webp" width="720" height="1390" loading="lazy" decoding="async"
+            data-i18n-alt="shot1Alt" alt="Pantalla de bienvenida: Menos volumen. Más intensidad, con sesiones cortas, descanso que cuenta y progreso medido"></div>
+          <figcaption data-i18n="shot1Cap"><b>El método, en una pantalla</b>Pocas series al fallo y el descanso que necesitas para crecer.</figcaption>
+        </figure>
+        <figure>
+          <div class="phone"><img src="img/app-plan.webp" width="720" height="1390" loading="lazy" decoding="async"
+            data-i18n-alt="shot2Alt" alt="Pantalla del plan: sesión Heavy Duty A con tres ejercicios, una serie de cada uno y la carga indicada"></div>
+          <figcaption data-i18n="shot2Cap"><b>Tu plan A/B</b>Cada ejercicio con su serie, sus repeticiones y su carga. 15 minutos.</figcaption>
+        </figure>
+        <figure>
+          <div class="phone"><img src="img/app-sesion.webp" width="720" height="1390" loading="lazy" decoding="async"
+            data-i18n-alt="shot3Alt" alt="Pantalla de entreno: aperturas en pec deck, una serie de 6 a 10 repeticiones con 30 kg y cadencia 4-2-4"></div>
+          <figcaption data-i18n="shot3Cap"><b>Una serie, bien hecha</b>Cadencia, técnica y a registrar. Hasta el fallo.</figcaption>
         </figure>
       </div>
     </div>
@@ -634,6 +675,14 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
     benchCap: '<b>Bench press</b> · 1 set · to failure',
     deadAlt: 'Athlete gripping a loaded barbell on the floor before a deadlift',
     deadCap: '<b>Deadlift</b> · 1 set · to failure',
+    appTitle: 'What it looks<br><span class="volt">like inside.</span>',
+    appBody: 'Real screenshots from the app (shown in Spanish). No fluff: today\'s session, what weight to use and when to stop.',
+    shot1Alt: 'Welcome screen: less volume, more intensity, with short sessions, rest that counts and measured progress',
+    shot1Cap: '<b>The method, on one screen</b>Few sets to failure and the rest you need to grow.',
+    shot2Alt: 'Plan screen: Heavy Duty A session with three exercises, one set each and the load shown',
+    shot2Cap: '<b>Your A/B plan</b>Each exercise with its set, reps and load. 15 minutes.',
+    shot3Alt: 'Workout screen: pec deck flyes, one set of 6 to 10 reps with 30 kg and 4-2-4 tempo',
+    shot3Cap: '<b>One set, done right</b>Tempo, form cues and log it. All the way to failure.',
     priceTitle: 'Free to start.<br><span class="volt">Premium</span> to stop thinking.',
     priceBody: 'The free plan is already a complete Heavy Duty routine. Premium adds the automatic plan, adaptation to your recovery and the full catalog. No auto-renewal: you pay once for the period you choose.',
     freeName: 'Free',
