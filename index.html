@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heavy Duty Coach · Una serie al fallo</title>
+<meta name="description" content="App Android de entrenamiento Heavy Duty: una serie al fallo por ejercicio, sesiones de 30 a 45 minutos y un plan que espera a que te recuperes.">
+<meta name="theme-color" content="#0E0F11">
+<meta property="og:title" content="Heavy Duty Coach">
+<meta property="og:description" content="Entrena menos. Más fuerte. Crece descansando.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:wdth,wght@50..150,500..900&family=Geist:wght@400..700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0E0F11;
+  --s1: #16181B;
+  --s2: #1B1E22;
+  --s3: #23272C;
+  --line: #2C3137;
+  --text: #F2F3F5;
+  --muted: #A4AAB3;
+  --volt: #C6F135;
+  --on-volt: #141A00;
+  --data: #8FC9FF;
+  --warn: #FFB84D;
+  --r-card: 20px;
+  --r-ctl: 14px;
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1180px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 400 17px/1.6 "Geist", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: inherit; }
+img, svg { display: block; }
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+.display {
+  font-family: "Anybody", sans-serif;
+  font-variation-settings: "wdth" 120;
+  font-weight: 900;
+  line-height: .95;
+  letter-spacing: -.02em;
+  margin: 0;
+}
+h2.display { font-size: clamp(36px, 6vw, 72px); }
+h3 { font-family: "Anybody", sans-serif; font-weight: 800; font-size: 22px; line-height: 1.2; margin: 0 0 8px; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.volt { color: var(--volt); }
+:focus-visible { outline: 3px solid var(--volt); outline-offset: 3px; border-radius: 6px; }
+.skip { position: absolute; left: -999px; top: 8px; background: var(--volt); color: var(--on-volt); padding: 10px 16px; border-radius: var(--r-ctl); z-index: 10; }
+.skip:focus { left: 16px; }
+
+/* Botones */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 52px; padding: 0 24px; border-radius: var(--r-ctl);
+  font: 700 16px/1 "Geist", sans-serif; text-decoration: none; white-space: nowrap;
+  transition: transform .15s ease, background-color .15s ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn-volt { background: var(--volt); color: var(--on-volt); }
+.btn-volt:hover { background: #d4f85c; }
+.btn-tonal { background: var(--s3); color: var(--text); }
+.btn-tonal:hover { background: #2c3137; }
+.btn svg { width: 20px; height: 20px; flex: none; }
+
+/* Cabecera */
+header {
+  position: sticky; top: 0; z-index: 5;
+  background: rgba(14, 15, 17, .86);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid transparent;
+}
+header.scrolled { border-bottom-color: var(--line); }
+.bar { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-family: "Anybody", sans-serif; font-weight: 800; font-size: 18px; }
+.brand svg { width: 34px; height: 34px; }
+nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+nav a { text-decoration: none; color: var(--muted); font-weight: 500; font-size: 15px; }
+nav a:hover { color: var(--text); }
+.bar .btn { min-height: 44px; padding: 0 18px; font-size: 15px; }
+
+/* Hero */
+.hero { padding: clamp(48px, 9vw, 120px) 0 clamp(64px, 9vw, 112px); position: relative; }
+.hero-grid { display: grid; grid-template-columns: 1.25fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: center; }
+.hero h1 { font-size: clamp(52px, 9.4vw, 128px); }
+.hero h1 .stroke { color: transparent; -webkit-text-stroke: 2px var(--text); }
+.hero .lead { font-size: clamp(18px, 1.6vw, 21px); color: var(--muted); max-width: 34ch; margin: 28px 0 36px; }
+.hero .lead strong { color: var(--text); font-weight: 600; }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; }
+.fineprint { margin-top: 16px; font-size: 14px; color: var(--muted); }
+
+/* Tarjeta de sesión del hero */
+.session {
+  background: var(--s1); border-radius: 28px; padding: 24px;
+  border: 1px solid var(--line);
+  max-width: 420px; justify-self: end; width: 100%;
+}
+.session-top { display: flex; justify-content: space-between; align-items: baseline; font-size: 14px; color: var(--muted); }
+.session-ex { margin: 18px 0 4px; font-family: "Anybody", sans-serif; font-weight: 800; font-size: 26px; line-height: 1.15; }
+.session-meta { color: var(--muted); font-size: 15px; }
+.reps { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin: 24px 0 10px; }
+.reps span { height: 54px; border-radius: 10px; background: var(--s3); position: relative; overflow: hidden; }
+.reps span::after {
+  content: ""; position: absolute; inset: 0; background: var(--volt);
+  transform: scaleY(0); transform-origin: bottom;
+  animation: rep 6.4s infinite;
+  animation-delay: calc(var(--i) * .45s);
+}
+.reps span:last-child::after { background: var(--warn); }
+@keyframes rep {
+  0% { transform: scaleY(0); }
+  6%, 78% { transform: scaleY(1); }
+  86%, 100% { transform: scaleY(0); }
+}
+.reps-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+.reps-label b { color: var(--warn); font-weight: 600; }
+.session-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 22px; }
+.stat { background: var(--s2); border-radius: 16px; padding: 14px 16px; }
+.stat small { display: block; color: var(--muted); font-size: 13px; }
+.stat strong { font-family: "Anybody", sans-serif; font-weight: 800; font-size: 24px; color: var(--data); }
+.rest-note { margin-top: 10px; background: var(--s2); border-radius: 16px; padding: 14px 16px; font-size: 14px; color: var(--muted); }
+.rest-note b { color: var(--text); font-weight: 600; }
+
+/* Cinta */
+.tape { border-block: 1px solid var(--line); overflow: hidden; background: var(--s1); }
+.tape-track { display: flex; gap: 48px; width: max-content; padding: 18px 0; animation: tape 38s linear infinite; }
+.tape-track span { font-family: "Anybody", sans-serif; font-variation-settings: "wdth" 130; font-weight: 900; font-size: 22px; white-space: nowrap; color: var(--muted); }
+.tape-track span i { font-style: normal; color: var(--volt); margin-right: 48px; }
+@keyframes tape { to { transform: translateX(-50%); } }
+
+/* Secciones */
+section { padding: clamp(72px, 10vw, 128px) 0; }
+.sec-head { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: end; margin-bottom: clamp(40px, 6vw, 72px); }
+.sec-head p { color: var(--muted); font-size: 18px; max-width: 46ch; }
+
+/* Método: comparativa */
+.compare { display: grid; gap: 14px; }
+.row { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: center; background: var(--s1); border-radius: var(--r-card); padding: 22px 26px; }
+.row-label { font-weight: 600; }
+.row-label small { display: block; color: var(--muted); font-weight: 400; font-size: 14px; }
+.bars { display: grid; gap: 10px; }
+.bar-line { display: grid; grid-template-columns: 1fr 112px; gap: 14px; align-items: center; font-size: 14px; }
+.track { height: 12px; border-radius: 99px; background: var(--s3); overflow: hidden; }
+.fill { height: 100%; border-radius: inherit; background: #4A5059; width: var(--w); }
+.fill.hd { background: var(--volt); }
+.bar-line span { color: var(--muted); }
+.bar-line span b { color: var(--text); font-weight: 600; }
+.legend { display: flex; gap: 20px; margin-top: 18px; font-size: 14px; color: var(--muted); }
+.legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 8px; vertical-align: -1px; background: #4A5059; }
+.legend i.hd { background: var(--volt); }
+.quote { margin-top: clamp(48px, 7vw, 88px); display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: start; }
+.quote .mark { font-family: "Anybody", sans-serif; font-weight: 900; font-size: 120px; line-height: .7; color: var(--volt); }
+.quote blockquote { margin: 0; font-family: "Anybody", sans-serif; font-weight: 700; font-size: clamp(24px, 3vw, 36px); line-height: 1.2; max-width: 30ch; }
+.quote cite { display: block; margin-top: 14px; font: 400 15px "Geist", sans-serif; color: var(--muted); font-style: normal; }
+
+/* Cómo funciona */
+.steps { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.steps li { display: grid; grid-template-columns: 140px 1fr 1.1fr; gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.steps .n { font-family: "Anybody", sans-serif; font-variation-settings: "wdth" 70; font-weight: 900; font-size: 88px; line-height: .8; color: var(--s3); -webkit-text-stroke: 1.5px var(--volt); }
+.steps h3 { font-size: 28px; }
+.steps p { color: var(--muted); }
+.steps ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.steps ul li { all: unset; display: flex; gap: 10px; color: var(--muted); font-size: 16px; }
+.steps ul li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--volt); margin-top: 10px; }
+
+/* Precios */
+#precios { background: var(--s1); }
+.plans { display: grid; grid-template-columns: 1fr 1fr 1.08fr; gap: 16px; align-items: stretch; }
+.plan { background: var(--bg); border-radius: 24px; padding: 30px 28px; display: flex; flex-direction: column; }
+.plan.pick { background: var(--s2); outline: 2px solid var(--volt); outline-offset: -2px; position: relative; }
+.tag { position: absolute; top: -14px; left: 28px; background: var(--volt); color: var(--on-volt); font-weight: 700; font-size: 13px; padding: 6px 12px; border-radius: 99px; }
+.plan-name { font-weight: 600; color: var(--muted); }
+.price { display: flex; align-items: baseline; gap: 6px; margin: 14px 0 6px; }
+.price strong { font-family: "Anybody", sans-serif; font-weight: 900; font-size: 56px; line-height: 1; }
+.price span { color: var(--muted); }
+.plan .note { font-size: 14px; color: var(--muted); min-height: 44px; }
+.plan .note b { color: var(--volt); font-weight: 600; }
+.feats { list-style: none; padding: 0; margin: 24px 0 28px; display: grid; gap: 12px; font-size: 15px; flex: 1; }
+.feats li { display: grid; grid-template-columns: 20px 1fr; gap: 10px; }
+.feats svg { width: 20px; height: 20px; margin-top: 2px; }
+.feats .off { color: var(--muted); }
+.plan .btn { width: 100%; }
+.pay-note { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 8px 28px; color: var(--muted); font-size: 14px; }
+.pay-note span::before { content: "·"; color: var(--volt); margin-right: 8px; font-weight: 900; }
+
+/* Instalar */
+.install { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 6vw, 80px); align-items: start; }
+.install ol { margin: 0; padding: 0; list-style: none; counter-reset: s; display: grid; gap: 12px; }
+.install ol li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; background: var(--s1); border-radius: 16px; padding: 14px 18px; }
+.install ol li::before { content: counter(s); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--s3); font-family: "Anybody", sans-serif; font-weight: 800; color: var(--volt); }
+.install .req { margin: 20px 0 28px; color: var(--muted); }
+
+/* FAQ */
+.faq { display: grid; gap: 10px; max-width: 860px; }
+details { background: var(--s1); border-radius: 16px; padding: 0 22px; }
+summary { list-style: none; cursor: pointer; padding: 20px 0; font-weight: 600; display: flex; justify-content: space-between; gap: 16px; }
+summary::-webkit-details-marker { display: none; }
+summary::after { content: "+"; font-family: "Anybody", sans-serif; font-weight: 800; color: var(--volt); font-size: 22px; line-height: 1; transition: transform .2s; }
+details[open] summary::after { transform: rotate(45deg); }
+details p { color: var(--muted); padding-bottom: 20px; max-width: 70ch; }
+
+/* Cierre */
+.final { text-align: left; padding-bottom: clamp(80px, 10vw, 140px); }
+.final .display { font-size: clamp(44px, 8vw, 104px); max-width: 12ch; }
+.final p { color: var(--muted); margin: 24px 0 32px; font-size: 18px; max-width: 44ch; }
+
+footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--muted); font-size: 14px; }
+.foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .session { justify-self: start; }
+  .plans { grid-template-columns: 1fr; max-width: 520px; }
+  .plan.pick { order: -1; }
+  .steps li { grid-template-columns: 100px 1fr; }
+  .steps li > ul { grid-column: 2; }
+}
+@media (max-width: 768px) {
+  nav { display: none; }
+  .sec-head, .install { grid-template-columns: 1fr; }
+  .row { grid-template-columns: 1fr; gap: 14px; padding: 20px; }
+  .bar-line { grid-template-columns: 1fr 96px; }
+  .steps li { grid-template-columns: 1fr; gap: 14px; }
+  .steps li > ul { grid-column: 1; }
+  .steps .n { font-size: 64px; }
+  .quote { grid-template-columns: 1fr; gap: 0; }
+  .quote .mark { font-size: 90px; }
+  body { font-size: 16px; }
+}
+@media (max-width: 420px) {
+  .bar .btn .long { display: none; }
+  .ctas .btn { width: 100%; }
+  .reps span { height: 44px; }
+  .price strong { font-size: 48px; }
+}
+@media (min-width: 1440px) {
+  :root { --max: 1280px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .tape-track { animation: none; }
+  .reps span::after { animation: none; transform: scaleY(1); }
+  .btn { transition: none; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mark" viewBox="0 0 48 48"><path fill="#C6F135" d="M16.8,21.3h14.4a.72.72 0 0 1 .72.72v3.96a.72.72 0 0 1-.72.72h-14.4a.72.72 0 0 1-.72-.72v-3.96a.72.72 0 0 1 .72-.72zM11.04,9.6h2.88a2.52,2.52 0 0 1 2.52,2.52v23.76a2.52,2.52 0 0 1-2.52,2.52h-2.88a2.52,2.52 0 0 1-2.52-2.52v-23.76a2.52,2.52 0 0 1 2.52-2.52zM4.74,15.36h.72a1.98,1.98 0 0 1 1.98,1.98v13.32a1.98,1.98 0 0 1-1.98,1.98h-.72a1.98,1.98 0 0 1-1.98-1.98v-13.32a1.98,1.98 0 0 1 1.98-1.98zM34.08,9.6h2.88a2.52,2.52 0 0 1 2.52,2.52v23.76a2.52,2.52 0 0 1-2.52,2.52h-2.88a2.52,2.52 0 0 1-2.52-2.52v-23.76a2.52,2.52 0 0 1 2.52-2.52zM42.54,15.36h.72a1.98,1.98 0 0 1 1.98,1.98v13.32a1.98,1.98 0 0 1-1.98,1.98h-.72a1.98,1.98 0 0 1-1.98-1.98v-13.32a1.98,1.98 0 0 1 1.98-1.98z"/></symbol>
+  <symbol id="dl" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19.5h14"/></symbol>
+  <symbol id="ok" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#C6F135" opacity=".16"/><path fill="none" stroke="#C6F135" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="m6 10.2 2.6 2.6L14 7.4"/></symbol>
+  <symbol id="no" viewBox="0 0 20 20"><circle cx="10" cy="10" r="10" fill="#A4AAB3" opacity=".12"/><path fill="none" stroke="#A4AAB3" stroke-width="2" stroke-linecap="round" d="M6.5 10h7"/></symbol>
+</svg>
+
+<header id="top">
+  <div class="wrap bar">
+    <a class="brand" href="#top" aria-label="Heavy Duty Coach, inicio">
+      <svg aria-hidden="true"><use href="#mark"/></svg>
+      Heavy Duty Coach
+    </a>
+    <nav aria-label="Secciones">
+      <ul>
+        <li><a href="#metodo">El método</a></li>
+        <li><a href="#como">Cómo funciona</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#faq">Preguntas</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
+      <svg aria-hidden="true"><use href="#dl"/></svg><span class="long">Descargar</span> APK
+    </a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <h1 class="display">Una serie.<br>Al fallo.<br><span class="stroke">Y a crecer.</span></h1>
+        <p class="lead">Entrenamiento <strong>Heavy Duty</strong> en tu Android: sesiones de 30 a 45 minutos, <strong>una serie al fallo</strong> por ejercicio y un plan que no te deja volver al gimnasio hasta que te has recuperado.</p>
+        <div class="ctas">
+          <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
+            <svg aria-hidden="true"><use href="#dl"/></svg>Descargar APK gratis
+          </a>
+          <a class="btn btn-tonal" href="#precios">Ver precios</a>
+        </div>
+        <p class="fineprint">Android 8 o superior · 7 días de Premium al registrarte, sin tarjeta</p>
+      </div>
+
+      <div class="session" role="img" aria-label="Ejemplo de sesión en la app: press de banca, una serie de 6 a 10 repeticiones al fallo, y 4 días de descanso hasta la siguiente sesión">
+        <div class="session-top"><span>Sesión A · hoy</span><span>2 de 4</span></div>
+        <p class="session-ex">Press de banca</p>
+        <p class="session-meta">1 serie · 6–10 reps · 80 kg</p>
+        <div class="reps" aria-hidden="true">
+          <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span>
+          <span style="--i:4"></span><span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span>
+        </div>
+        <div class="reps-label" aria-hidden="true"><span>Rep 1</span><b>Fallo</b></div>
+        <div class="session-stats" aria-hidden="true">
+          <div class="stat"><small>Series hoy</small><strong>4</strong></div>
+          <div class="stat"><small>Duración</small><strong>34 min</strong></div>
+        </div>
+        <p class="rest-note" aria-hidden="true">Próxima sesión en <b>4 días</b>. El músculo crece mientras descansas.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tape" aria-hidden="true">
+    <div class="tape-track">
+      <span><i>/</i>Alta intensidad</span><span><i>/</i>Bajo volumen</span><span><i>/</i>Recuperación total</span><span><i>/</i>Básicos multiarticulares</span><span><i>/</i>Progresión registrada</span>
+      <span><i>/</i>Alta intensidad</span><span><i>/</i>Bajo volumen</span><span><i>/</i>Recuperación total</span><span><i>/</i>Básicos multiarticulares</span><span><i>/</i>Progresión registrada</span>
+    </div>
+  </div>
+
+  <section id="metodo">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display">Menos series.<br><span class="volt">Más estímulo.</span></h2>
+        <p>Heavy Duty es el método de alta intensidad que popularizó Mike Mentzer: el estímulo que hace crecer al músculo es el esfuerzo máximo, no el número de series. Lo que viene después del entreno, el descanso, es donde de verdad se construye.</p>
+      </div>
+
+      <div class="compare" role="list">
+        <div class="row" role="listitem">
+          <p class="row-label">Series por ejercicio<small>trabajo efectivo</small></p>
+          <div class="bars">
+            <div class="bar-line"><div class="track"><div class="fill" style="--w:100%"></div></div><span><b>3–5</b> series</span></div>
+            <div class="bar-line"><div class="track"><div class="fill hd" style="--w:25%"></div></div><span><b>1–2</b> series</span></div>
+          </div>
+        </div>
+        <div class="row" role="listitem">
+          <p class="row-label">Días de gimnasio<small>por semana</small></p>
+          <div class="bars">
+            <div class="bar-line"><div class="track"><div class="fill" style="--w:100%"></div></div><span><b>5–6</b> días</span></div>
+            <div class="bar-line"><div class="track"><div class="fill hd" style="--w:40%"></div></div><span><b>2–3</b> días</span></div>
+          </div>
+        </div>
+        <div class="row" role="listitem">
+          <p class="row-label">Duración de la sesión<small>de media</small></p>
+          <div class="bars">
+            <div class="bar-line"><div class="track"><div class="fill" style="--w:100%"></div></div><span><b>75–90</b> min</span></div>
+            <div class="bar-line"><div class="track"><div class="fill hd" style="--w:46%"></div></div><span><b>30–45</b> min</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="legend"><span><i></i>Rutina de volumen habitual</span><span><i class="hd"></i>Heavy Duty Coach</span></div>
+
+      <div class="quote">
+        <span class="mark" aria-hidden="true">“</span>
+        <blockquote>
+          No es cuánto entrenas. Es lo duro que entrenas, y cuánto te dejas recuperar.
+          <cite>La idea central del método Heavy Duty</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="como" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display">Tu entrenador,<br>sin ruido.</h2>
+        <p>La app aplica las reglas del método por ti. Tú solo pones el esfuerzo: elegir peso, empujar hasta el fallo y apuntar lo que hiciste.</p>
+      </div>
+      <ol class="steps">
+        <li>
+          <span class="n" aria-hidden="true">01</span>
+          <div><h3>Cuéntanos de dónde partes</h3><p>Un registro de 7 pasos: nivel, objetivo, días disponibles, equipo y lesiones.</p></div>
+          <ul>
+            <li>Con eso se monta tu plan A/B con los básicos de cada músculo</li>
+            <li>Las lesiones descartan los ejercicios que no te convienen</li>
+          </ul>
+        </li>
+        <li>
+          <span class="n" aria-hidden="true">02</span>
+          <div><h3>Entrena al fallo</h3><p>Cada ejercicio, una serie de trabajo hasta no poder hacer otra repetición con buena técnica.</p></div>
+          <ul>
+            <li>Guía de ejecución con el movimiento ilustrado de 106 ejercicios</li>
+            <li>Registras peso y repeticiones; la app guarda tus récords</li>
+            <li>Funciona sin conexión y sincroniza después</li>
+          </ul>
+        </li>
+        <li>
+          <span class="n" aria-hidden="true">03</span>
+          <div><h3>Recupérate de verdad</h3><p>El plan espera. Nada de premiar entrenar días seguidos ni de añadir series para compensar.</p></div>
+          <ul>
+            <li>Con Premium, el sueño, los pasos y el pulso de Health Connect ajustan cada sesión</li>
+            <li>Si te estancas, el plan rota el ejercicio</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="precios">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2 class="display">Gratis para empezar.<br><span class="volt">Premium</span> para no pensar.</h2>
+        <p>El plan gratuito ya es una rutina Heavy Duty completa. Premium añade el plan automático, la adaptación a tu recuperación y todo el catálogo. Sin renovaciones automáticas: pagas una vez por el periodo que eliges.</p>
+      </div>
+
+      <div class="plans">
+        <article class="plan" aria-labelledby="p-free">
+          <p class="plan-name" id="p-free">Gratis</p>
+          <p class="price"><strong>0 $</strong><span>para siempre</span></p>
+          <p class="note">El método aplicado a mano con los básicos.</p>
+          <ul class="feats">
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>2 rutinas de hasta 4 ejercicios</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>El ejercicio básico de cada músculo</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Guía de ejecución y descanso mínimo</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Historial de los últimos 30 días</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Hasta 5 récords personales</li>
+            <li class="off"><svg aria-hidden="true"><use href="#no"/></svg>Plan automático adaptativo</li>
+          </ul>
+          <a class="btn btn-tonal" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">Descargar APK</a>
+        </article>
+
+        <article class="plan" aria-labelledby="p-month">
+          <p class="plan-name" id="p-month">Premium mensual</p>
+          <p class="price"><strong>9,99 $</strong><span>/ mes</span></p>
+          <p class="note">Un mes completo. No se renueva solo.</p>
+          <ul class="feats">
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Plan Mentzer A/B automático según tu perfil</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Carga y volumen según tu recuperación y feedback</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Rotación de ejercicios cuando te estancas</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Los 126 ejercicios y hasta 6 por rutina</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Historial completo y 50 récords</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Recuperación con Health Connect</li>
+          </ul>
+          <a class="btn btn-tonal" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">Probar 7 días gratis</a>
+        </article>
+
+        <article class="plan pick" aria-labelledby="p-year">
+          <span class="tag">Ahorras un 50 %</span>
+          <p class="plan-name" id="p-year">Premium anual</p>
+          <p class="price"><strong>59,99 $</strong><span>/ año</span></p>
+          <p class="note">Sale a <b>5,00 $ al mes</b>. Un año completo, sin renovación automática.</p>
+          <ul class="feats">
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Todo lo de Premium mensual</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Un año de plan que se ajusta a cada sesión</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Tu progreso completo, mes a mes</li>
+            <li><svg aria-hidden="true"><use href="#ok"/></svg>Aviso antes de que venza</li>
+          </ul>
+          <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
+            <svg aria-hidden="true"><use href="#dl"/></svg>Empezar con 7 días gratis
+          </a>
+        </article>
+      </div>
+
+      <div class="pay-note">
+        <span>Precios en USD</span>
+        <span>Pago con tarjeta, Apple Pay, Google Pay, PayPal o cripto</span>
+        <span>Premium se activa desde Perfil → Hazte Premium</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="instalar">
+    <div class="wrap install">
+      <div>
+        <h2 class="display">Instálala en<br>un minuto.</h2>
+        <p class="req">La app se distribuye como APK directo, sin pasar por la tienda. Necesitas Android 8.0 o superior y unos 20 MB libres.</p>
+        <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
+          <svg aria-hidden="true"><use href="#dl"/></svg>Descargar APK
+        </a>
+      </div>
+      <ol>
+        <li>Pulsa Descargar APK desde el móvil.</li>
+        <li>Abre el archivo descargado desde las notificaciones o la carpeta Descargas.</li>
+        <li>Si Android lo pide, permite instalar apps de tu navegador. Solo esta vez.</li>
+        <li>Abre Heavy Duty Coach, regístrate y tu prueba Premium empieza sola.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="faq" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head"><h2 class="display">Preguntas.</h2></div>
+      <div class="faq">
+        <details>
+          <summary>¿De verdad basta con una serie por ejercicio?</summary>
+          <p>Si es una serie al fallo real, tras un calentamiento, sí: es la base del método Heavy Duty. La clave es que la intensidad sea máxima y que el descanso entre sesiones sea suficiente. La app se encarga de lo segundo.</p>
+        </details>
+        <details>
+          <summary>¿Qué pasa cuando terminan los 7 días de prueba?</summary>
+          <p>Pasas al plan gratuito sin que se te cobre nada. Conservas tus rutinas y tu historial reciente; el plan automático y los ejercicios premium quedan bloqueados hasta que actives Premium.</p>
+        </details>
+        <details>
+          <summary>¿Premium se renueva automáticamente?</summary>
+          <p>No. Pagas una vez por un mes o por un año. Antes de que venza la app te avisa, y al vencer vuelves al plan gratuito.</p>
+        </details>
+        <details>
+          <summary>¿Por qué no está en Google Play?</summary>
+          <p>Por ahora la distribuimos como APK directo. Es la misma app firmada; el aviso de Android al instalar aparece con cualquier app que no venga de la tienda.</p>
+        </details>
+        <details>
+          <summary>¿Necesito un reloj o una pulsera?</summary>
+          <p>No. Si usas Health Connect (Samsung Health, Fitbit, Garmin y otras apps vuelcan ahí sus datos), Premium usa tu sueño, pasos y pulso para ajustar la sesión. Sin ellos, el plan se guía por tu feedback.</p>
+        </details>
+        <details>
+          <summary>¿Está en español?</summary>
+          <p>Sí, en español y en inglés. La app sigue el idioma de tu teléfono y puedes cambiarlo desde el perfil.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="final" style="padding-top:0">
+    <div class="wrap">
+      <h2 class="display">Tu próxima serie puede ser la única.</h2>
+      <p>Descarga la app, haz tu primera sesión de 30 minutos y deja que el descanso haga el resto.</p>
+      <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
+        <svg aria-hidden="true"><use href="#dl"/></svg>Descargar APK gratis
+      </a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>© 2026 Heavy Duty Coach</span>
+    <span>Inspirada en la filosofía de entrenamiento de Mike Mentzer. Sin afiliación con él ni con sus herederos.</span>
+  </div>
+</footer>
+
+<script>
+  const header = document.querySelector('header');
+  addEventListener('scroll', () => header.classList.toggle('scrolled', scrollY > 8), { passive: true });
+</script>
+</body>
+</html>
