@@ -144,7 +144,7 @@ def post_buffer(post):
     due = datetime.fromtimestamp(time.time() + 300, timezone.utc).isoformat().replace("+00:00", "Z")
     done, errors = [], []
     for c in channels:
-        text = instagram_caption(post) if c["service"] == "instagram" else facebook_caption(post)
+        text = {"instagram": instagram_caption, "bluesky": bluesky_text}.get(c["service"], facebook_caption)(post)
         res = buffer("mutation($input: CreatePostInput!) { createPost(input: $input) {"
                      " ... on PostActionSuccess { post { id } } ... on MutationError { message } } }",
                      {"input": {"channelId": c["id"], "text": text, "schedulingType": "automatic",
