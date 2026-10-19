@@ -136,6 +136,20 @@ def buffer_channels():
     return [c for c in channels if not c["isQueuePaused"] and not (direct and c["service"] == "bluesky")]
 
 
+class PartialFailure(RuntimeError):
+    """Salió en algunos canales: hay que avanzar la rotación para no repetirlos."""
+
+
+def buffer_metadata(service, post):
+    if service == "facebook":
+        return {"facebook": {"type": "post"}}
+    if service == "instagram":
+        # Las fotos de ejercicios son generadas con IA; las capturas de la app (app-*) no.
+        ai = not Path(post["image"]).name.startswith("app-")
+        return {"instagram": {"type": "post", "shouldShareToFeed": True, "isAiGenerated": ai}}
+    return None
+
+
 def post_buffer(post):
     channels = buffer_channels()
     if not channels:
@@ -149,11 +163,12 @@ def post_buffer(post):
                      " ... on PostActionSuccess { post { id } } ... on MutationError { message } } }",
                      {"input": {"channelId": c["id"], "text": text, "schedulingType": "automatic",
                                 "mode": "customScheduled", "dueAt": due,
-                                "assets": [{"image": {"url": card_url(post)}}]}})
+                                "assets": [{"image": {"url": card_url(post)}}],
+                                **({"metadata": m} if (m := buffer_metadata(c["service"], post)) else {})}})
         out = res["createPost"]
         (done if "post" in out else errors).append(f"{c['service']}:{out.get('post', {}).get('id') or out.get('message')}")
     if errors:
-        raise RuntimeError(f"programados {done}; fallaron {errors}")
+        raise (PartialFailure if done else RuntimeError)(f"programados {done}; fallaron {errors}")
     return f"programados para {due}: {', '.join(done)}"
 
 
@@ -184,16 +199,21 @@ def main(args):
         print("Ninguna red configurada: añade los secrets del repo (ver social/README.md).")
         return 0
 
-    failed = []
+    failed, published = [], False
     for name, fn in enabled.items():
         try:
             print(f"{name}: publicado {fn(post)}")
+            published = True
+        except PartialFailure as e:
+            failed.append(name)
+            published = True
+            print(f"{name}: ERROR parcial {e}", file=sys.stderr)
         except Exception as e:  # una red caída no debe impedir publicar en las demás
             failed.append(name)
             print(f"{name}: ERROR {e}", file=sys.stderr)
 
-    # Avanza si salió en alguna red, para no repetir la entrada en las que sí funcionaron.
-    if len(failed) < len(enabled):
+    # Avanza si salió en algún canal, para no repetir la entrada en los que sí funcionaron.
+    if published:
         state_file.write_text(json.dumps({"next": state["next"] + 1, "last": post["id"]}) + "\n")
     return 1 if failed else 0
 
