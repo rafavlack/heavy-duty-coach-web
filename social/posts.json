@@ -94,5 +94,165 @@
     "image": "img/app-sesion.webp",
     "text": "A 4-2-4 tempo takes momentum out and leaves all the work to the muscle. The app has a built-in tempo metronome, so you never count in your head.",
     "alt": "Card: 4 seconds up, 2 pause, 4 down. Screenshot of a workout with 4-2-4 tempo."
+  },
+  {
+    "id": "aproximacion-es",
+    "lang": "es",
+    "title": "Calienta. Luego, una sola serie.",
+    "image": "social/photos/cuadriceps_sentadilla_frontal.jpg",
+    "text": "En Heavy Duty lo habitual son 2 series de aproximación, ligeras y sin llegar al fallo, y 1 serie efectiva al fallo. La app te marca cuáles son cuáles en cada ejercicio.",
+    "alt": "Tarjeta: Calienta. Luego, una sola serie. Atleta en una sentadilla frontal."
+  },
+  {
+    "id": "preagotamiento-en",
+    "lang": "en",
+    "title": "Pre-exhaust: the Mentzer trick.",
+    "image": "social/photos/pecho_gen_aperturas_en_peck_deck.jpg",
+    "text": "Isolate the muscle first, then go straight to the compound lift with no rest. Flyes, then press. The app flags which exercises are linked and tells you not to rest in between.",
+    "alt": "Card: Pre-exhaust, the Mentzer trick. Athlete on a pec deck machine."
+  },
+  {
+    "id": "favoritos-es",
+    "lang": "es",
+    "title": "Tus ejercicios favoritos, primero.",
+    "image": "social/photos/app-favoritos.webp",
+    "text": "Al registrarte eliges los ejercicios que más te gustan de cada grupo muscular y la app los prioriza al montar tus rutinas. Con Premium tienes los 126.",
+    "alt": "Tarjeta: Tus ejercicios favoritos, primero. Captura de la app eligiendo ejercicios de pecho."
+  },
+  {
+    "id": "tecnica-en",
+    "lang": "en",
+    "title": "To failure. Not to ugly reps.",
+    "image": "social/photos/hombros_deltoide_frontal_press_militar.jpg",
+    "text": "Failure means you can't complete one more clean rep. Not swinging, not bouncing. Every exercise in the app has a form guide so the last rep still counts.",
+    "alt": "Card: To failure. Not to ugly reps. Athlete doing an overhead press."
+  },
+  {
+    "id": "salud-es",
+    "lang": "es",
+    "title": "Tu sueño también entrena.",
+    "image": "social/photos/espalda_anchura_dominadas.jpg",
+    "text": "Con Premium, la app lee tu sueño, tus pasos y tu pulso desde Health Connect y ajusta la recomendación de cada sesión. Si no te has recuperado, te lo dice.",
+    "alt": "Tarjeta: Tu sueño también entrena. Atleta haciendo dominadas."
+  },
+  {
+    "id": "ab-en",
+    "lang": "en",
+    "title": "Two workouts. A and B. That's it.",
+    "image": "social/photos/pecho_gen_press_inclinado.jpg",
+    "text": "Heavy Duty Coach builds two short sessions from your profile and alternates them. No 6-day split, no guessing what to train today.",
+    "alt": "Card: Two workouts, A and B, that's it. Athlete doing an incline press."
+  },
+  {
+    "id": "progresion-es",
+    "lang": "es",
+    "title": "Subes carga cuando te la ganas.",
+    "image": "social/photos/femorales_peso_muerto_rumano.jpg",
+    "text": "Cuando cumples el objetivo de repeticiones, la app te sube la carga o las repeticiones para la próxima vez. Si no, repites. Así de simple, y la app lleva la cuenta por ti.",
+    "alt": "Tarjeta: Subes carga cuando te la ganas. Atleta haciendo peso muerto rumano."
+  },
+  {
+    "id": "lesiones-en",
+    "lang": "en",
+    "title": "Bad shoulder? The plan knows.",
+    "image": "social/photos/pecho_gen_fondos.jpg",
+    "text": "Tell the app about your injuries when you sign up and it leaves out the exercises that don't suit you. Safety rules never depend on your plan.",
+    "alt": "Card: Bad shoulder? The plan knows. Athlete doing chest dips."
+  },
+  {
+    "id": "offline-es",
+    "lang": "es",
+    "title": "¿Sin cobertura en el gimnasio? Da igual.",
+    "image": "social/photos/biceps_curl_barra_recta.jpg",
+    "text": "La app funciona sin conexión: entrenas, registras tus series y editas tus rutinas. Todo se envía solo cuando vuelve la red.",
+    "alt": "Tarjeta: ¿Sin cobertura en el gimnasio? Da igual. Atleta haciendo curl con barra."
+  },
+  {
+    "id": "estancado2-en",
+    "lang": "en",
+    "title": "Stalled? Change the lift, not the volume.",
+    "image": "social/photos/cuadriceps_sentadilla_frontal.jpg",
+    "text": "Adding sets rarely breaks a plateau. With Premium, when you stop progressing, the plan rotates the exercise and keeps the intensity.",
+    "alt": "Card: Stalled? Change the lift, not the volume. Athlete doing a front squat."
+  },
+  {
+    "id": "registro-es",
+    "lang": "es",
+    "title": "6 preguntas. 2 minutos. Tu plan.",
+    "image": "social/photos/app-objetivo.webp",
+    "text": "Nivel, objetivo, días, equipo y ejercicios favoritos. Con eso la app arma tu plan Heavy Duty, y lo puedes cambiar cuando quieras desde tu perfil.",
+    "alt": "Tarjeta: 6 preguntas, 2 minutos, tu plan. Captura de la app eligiendo objetivo."
+  },
+  {
+    "id": "renovacion-en",
+    "lang": "en",
+    "title": "No auto-renewal. Ever.",
+    "image": "social/photos/app-objetivo.webp",
+    "text": "Premium is a one-time payment for a month ($9.99) or a year ($59.99). The app reminds you before it ends, then you go back to the free plan. No surprise charges.",
+    "alt": "Card: No auto-renewal, ever. Screenshot of the app goal selection."
+  },
+  {
+    "id": "records-es",
+    "lang": "es",
+    "title": "Tus récords, apuntados.",
+    "image": "social/photos/pecho_gen_press_inclinado.jpg",
+    "text": "Cada serie que registras queda guardada y la app te enseña tus récords personales. Ver que el número sube es la mejor motivación para la siguiente.",
+    "alt": "Tarjeta: Tus récords, apuntados. Atleta haciendo press inclinado."
+  },
+  {
+    "id": "vida-en",
+    "lang": "en",
+    "title": "Less time in the gym. More life outside it.",
+    "image": "social/photos/espalda_anchura_dominadas.jpg",
+    "text": "Two or three short sessions a week leave room for work, family and sleep. Heavy Duty is built for people with a life.",
+    "alt": "Card: Less time in the gym, more life outside it. Athlete doing pull-ups."
+  },
+  {
+    "id": "negativas-es",
+    "lang": "es",
+    "title": "La bajada también cuenta.",
+    "image": "social/photos/hombros_deltoide_frontal_press_militar.jpg",
+    "text": "Las negativas, bajar el peso despacio y controlado, son una técnica de intensidad clásica de Heavy Duty. Elige Técnicas de intensidad al registrarte y la app las incluye.",
+    "alt": "Tarjeta: La bajada también cuenta. Atleta haciendo press militar."
+  },
+  {
+    "id": "menos-en",
+    "lang": "en",
+    "title": "Less is more. Literally.",
+    "image": "social/photos/femorales_peso_muerto_rumano.jpg",
+    "text": "1 to 2 working sets per exercise instead of 3 to 5. 2 to 3 days a week instead of 5 or 6. Same goal: grow. Just a smarter way to get there.",
+    "alt": "Card: Less is more, literally. Athlete doing a Romanian deadlift."
+  },
+  {
+    "id": "semana-es",
+    "lang": "es",
+    "title": "Elige tus días. La app pone el descanso.",
+    "image": "social/photos/pecho_gen_fondos.jpg",
+    "text": "Planifica tu semana por días y la app te dice qué sesión toca cada uno. No te deja poner dos días seguidos: Heavy Duty exige al menos un día de descanso entre sesiones.",
+    "alt": "Tarjeta: Elige tus días, la app pone el descanso. Atleta haciendo fondos."
+  },
+  {
+    "id": "idiomas-en",
+    "lang": "en",
+    "title": "In English. En español.",
+    "image": "social/photos/app-favoritos.webp",
+    "text": "Heavy Duty Coach speaks both. It follows your phone language and you can switch it from your profile, exercise names included.",
+    "alt": "Card: In English, en español. Screenshot of the app."
+  },
+  {
+    "id": "android-es",
+    "lang": "es",
+    "title": "Descárgala gratis en tu Android.",
+    "image": "social/photos/biceps_curl_barra_recta.jpg",
+    "text": "Android 8 o superior, unos 20 MB y un minuto para instalarla desde la web. Al registrarte tienes 7 días de Premium sin poner tarjeta.",
+    "alt": "Tarjeta: Descárgala gratis en tu Android. Atleta haciendo curl con barra."
+  },
+  {
+    "id": "piloto-en",
+    "lang": "en",
+    "title": "Free forever. Premium for autopilot.",
+    "image": "social/photos/pecho_gen_aperturas_en_peck_deck.jpg",
+    "text": "Free: apply the method yourself with the basics. Premium: the plan builds and adapts itself to your recovery. $9.99 a month or $59.99 a year, no auto-renewal.",
+    "alt": "Card: Free forever, Premium for autopilot. Athlete on a pec deck machine."
   }
 ]

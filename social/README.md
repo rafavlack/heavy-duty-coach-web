@@ -1,6 +1,6 @@
 # Publicación automática en redes
 
-GitHub Actions (`.github/workflows/social.yml`) publica lunes, miércoles y viernes la siguiente entrada de `posts.json`, en rotación, en las redes configuradas. Coste cero: Actions es gratis en repos públicos y las tres API lo son.
+GitHub Actions (`.github/workflows/social.yml`) publica cada día la siguiente entrada de `posts.json`, en rotación, en las redes configuradas. Coste cero: Actions es gratis en repos públicos y las tres API lo son.
 
 Cada red se activa sola al añadir sus secrets en GitHub → repo → Settings → Secrets and variables → Actions.
 

@@ -2,7 +2,7 @@ name: Publicar en redes
 
 on:
   schedule:
-    - cron: "0 15 * * 1,3,5" # lunes, miércoles y viernes, 11:00 en la costa este de EE. UU.
+    - cron: "0 15 * * *" # todos los días, 11:00 en la costa este de EE. UU.
   workflow_dispatch:
 
 permissions:
