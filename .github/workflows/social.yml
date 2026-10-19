@@ -1,0 +1,33 @@
+name: Publicar en redes
+
+on:
+  schedule:
+    - cron: "0 15 * * 1,3,5" # lunes, miércoles y viernes, 11:00 en la costa este de EE. UU.
+  workflow_dispatch:
+
+permissions:
+  contents: write # para guardar social/state.json
+
+concurrency: social
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 social/post.py --check
+      - run: python3 social/post.py
+        env:
+          BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+      # Aunque falle una red, se guarda el avance de las que publicaron. El commit también
+      # mantiene vivo el cron: GitHub lo apaga tras 60 días sin actividad en el repo.
+      - if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898299+github-actions[bot]@users.noreply.github.com"
+          git add social/state.json
+          git diff --cached --quiet || { git commit -m "social: $(python3 -c 'import json;print(json.load(open("social/state.json"))["last"])')" && git push; }

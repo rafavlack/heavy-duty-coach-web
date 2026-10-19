@@ -1,2 +1,3 @@
 *.apk
 .gstack/
+__pycache__/

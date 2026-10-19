@@ -1,0 +1,98 @@
+[
+  {
+    "id": "volumen-es",
+    "lang": "es",
+    "title": "Haces 20 series de pecho. Mentzer hacía 2.",
+    "image": "img/press-banca.jpg",
+    "text": "Más series no es más músculo. Una serie llevada al fallo de verdad, y el descanso suficiente, es todo el estímulo que necesitas. Heavy Duty Coach te dice cuánto peso usar y cuándo parar.",
+    "alt": "Tarjeta: Haces 20 series de pecho. Mentzer hacía 2. Atleta haciendo press de banca."
+  },
+  {
+    "id": "15min-en",
+    "lang": "en",
+    "title": "Your whole workout today. 15 minutes.",
+    "image": "img/app-plan.webp",
+    "text": "3 exercises, one working set each, taken to failure. That is a full Heavy Duty session. Heavy Duty Coach builds your A/B plan and gives you the weight, reps and tempo.",
+    "alt": "Card: Your whole workout today. 15 minutes. Screenshot of the app plan with three exercises."
+  },
+  {
+    "id": "ultima-es",
+    "lang": "es",
+    "title": "La serie que te hace crecer es la última.",
+    "image": "img/sentadilla.jpg",
+    "text": "La que casi no sale. Una serie al fallo con buena técnica vale más que cinco a medio gas. La app te marca el rango de repeticiones y la carga de cada ejercicio.",
+    "alt": "Tarjeta: La serie que te hace crecer es la última. Atleta en una sentadilla con barra."
+  },
+  {
+    "id": "descanso-en",
+    "lang": "en",
+    "title": "My app won't let me train tomorrow.",
+    "image": "img/peso-muerto.jpg",
+    "text": "Muscle grows while you rest, not while you train. Heavy Duty Coach waits until you have recovered before your next session. No streaks, no guilt.",
+    "alt": "Card: My app won't let me train tomorrow. Athlete about to deadlift."
+  },
+  {
+    "id": "cadencia-es",
+    "lang": "es",
+    "title": "4 segundos arriba. 2 de pausa. 4 abajo.",
+    "image": "img/app-sesion.webp",
+    "text": "La cadencia 4-2-4 quita la inercia y deja todo el trabajo al músculo. La app trae metrónomo de cadencia para que no tengas que contar de cabeza.",
+    "alt": "Tarjeta: 4 segundos arriba, 2 de pausa, 4 abajo. Captura de la sesión con cadencia 4-2-4."
+  },
+  {
+    "id": "gratis-en",
+    "lang": "en",
+    "title": "Free. Really.",
+    "image": "img/app-bienvenida.webp",
+    "text": "The free plan is a complete Heavy Duty routine: 2 routines, the basic lift for each muscle and form guides. Premium adds the adaptive automatic plan. 7-day trial, no card.",
+    "alt": "Card: Free. Really. Screenshot of the app welcome screen."
+  },
+  {
+    "id": "tiempo-es",
+    "lang": "es",
+    "title": "30 a 45 minutos. 2 o 3 días por semana.",
+    "image": "img/peso-muerto.jpg",
+    "text": "Si no tienes tiempo para vivir en el gimnasio, tampoco lo necesitas. Pocas series, máxima intensidad y descanso de verdad. Ese es el método Heavy Duty.",
+    "alt": "Tarjeta: 30 a 45 minutos, 2 o 3 días por semana. Atleta antes de un peso muerto."
+  },
+  {
+    "id": "estancado-en",
+    "lang": "en",
+    "title": "Stuck for months? Do less.",
+    "image": "img/press-banca.jpg",
+    "text": "Plateaus often come from doing too much and recovering too little. Cut the volume, push one set to failure and rest. If you still stall, the app rotates the exercise.",
+    "alt": "Card: Stuck for months? Do less. Athlete bench pressing."
+  },
+  {
+    "id": "gratis-es",
+    "lang": "es",
+    "title": "Gratis. De verdad.",
+    "image": "img/app-bienvenida.webp",
+    "text": "El plan gratuito ya es una rutina Heavy Duty completa: 2 rutinas, el básico de cada músculo y guías de técnica. Premium añade el plan automático. 7 días de prueba sin tarjeta.",
+    "alt": "Tarjeta: Gratis. De verdad. Captura de la pantalla de bienvenida de la app."
+  },
+  {
+    "id": "lema-en",
+    "lang": "en",
+    "title": "One set. To failure. Then grow.",
+    "image": "img/app-plan.webp",
+    "text": "Heavy Duty training for Android, inspired by Mike Mentzer's method. Short sessions, maximum effort and a plan built around recovery.",
+    "alt": "Card: One set. To failure. Then grow. Screenshot of the app plan."
+  },
+  {
+    "id": "descanso-es",
+    "lang": "es",
+    "title": "Mi app no me deja entrenar mañana.",
+    "image": "img/sentadilla.jpg",
+    "text": "El músculo crece mientras descansas, no mientras entrenas. Heavy Duty Coach espera a que te recuperes antes de tu próxima sesión. Sin rachas y sin culpa.",
+    "alt": "Tarjeta: Mi app no me deja entrenar mañana. Atleta en una sentadilla con barra."
+  },
+  {
+    "id": "cadencia-en",
+    "lang": "en",
+    "title": "4 seconds up. 2 pause. 4 down.",
+    "image": "img/app-sesion.webp",
+    "text": "A 4-2-4 tempo takes momentum out and leaves all the work to the muscle. The app has a built-in tempo metronome, so you never count in your head.",
+    "alt": "Card: 4 seconds up, 2 pause, 4 down. Screenshot of a workout with 4-2-4 tempo."
+  }
+]
