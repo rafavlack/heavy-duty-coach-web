@@ -225,6 +225,8 @@ section { padding: clamp(72px, 10vw, 128px) 0; }
 .install ol li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 14px; align-items: center; background: var(--s1); border-radius: 16px; padding: 14px 18px; }
 .install ol li::before { content: counter(s); display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: var(--s3); font-family: "Anybody", sans-serif; font-weight: 800; color: var(--volt); }
 .install .req { margin: 20px 0 28px; color: var(--muted); }
+.version { margin-top: 14px; font-size: 14px; color: var(--muted); }
+.version a { color: var(--text); text-underline-offset: 3px; }
 
 /* FAQ */
 .faq { display: grid; gap: 10px; max-width: 860px; }
@@ -556,6 +558,11 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
         <a class="btn btn-volt" data-apk href="https://github.com/rafavlack/heavy-duty-coach-web/releases/latest/download/heavy-duty-coach.apk">
           <svg aria-hidden="true"><use href="#dl"/></svg><span data-i18n="dlApk">Descargar APK</span>
         </a>
+        <p class="version">
+          <span data-i18n="verLabel">Versión</span>
+          <a id="release" href="https://github.com/rafavlack/heavy-duty-coach-web/releases/tag/v0.1.1">0.1.1</a> ·
+          <a href="https://github.com/rafavlack/heavy-duty-coach-web/releases" data-i18n="allReleases">todas las versiones</a>
+        </p>
       </div>
       <ol data-i18n="installSteps">
         <li>Pulsa Descargar APK desde el móvil.</li>
@@ -704,6 +711,8 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
     payNote: '<span>Prices in USD</span><span>Pay by card, Apple Pay, Google Pay, PayPal or crypto</span><span>Activate Premium from Profile → Get Premium</span>',
     installTitle: 'Install it in<br>a minute.',
     installReq: 'The app ships as a direct APK, outside the store. You need Android 8.0 or later and about 20 MB free.',
+    verLabel: 'Version',
+    allReleases: 'all releases',
     installSteps: li(['Tap Download APK on your phone.', 'Open the downloaded file from your notifications or the Downloads folder.', 'If Android asks, allow installs from your browser. Just this once.', 'Open Heavy Duty Coach, sign up and your Premium trial starts on its own.']),
     faqTitle: 'Questions.',
     faq: [
@@ -748,6 +757,16 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
   const initial = ['es', 'en'].includes(asked) ? asked
     : saved || (navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en');
   if (initial === 'en') setLang('en');
+
+  // El HTML trae la versión publicada al escribirlo; si hay otra más nueva, se muestra esa.
+  fetch('https://api.github.com/repos/rafavlack/heavy-duty-coach-web/releases/latest')
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(({ tag_name, html_url }) => {
+      const a = document.getElementById('release');
+      a.textContent = tag_name.replace(/^v/, '');
+      a.href = html_url;
+    })
+    .catch(() => {});
 </script>
 </body>
 </html>
