@@ -9,12 +9,13 @@ Cada red se activa sola al añadir sus secrets en GitHub → repo → Settings �
 2. Settings → Privacy and security → App passwords → Add.
 3. Secrets: `BSKY_HANDLE` (p. ej. `heavydutycoach.bsky.social`) y `BSKY_APP_PASSWORD`.
 
-## Facebook e Instagram (una sola app de Meta)
-1. Crea una **página de Facebook** y pasa Instagram a **cuenta profesional** (Creador o Empresa) enlazada a esa página.
-2. developers.facebook.com → Create app → tipo Business. Añade los productos *Facebook Login for Business* e *Instagram*. Para publicar en tus propias cuentas no hace falta App Review: tú eres administrador de la app.
-3. Graph API Explorer → elige la app → pide `pages_show_list`, `pages_read_engagement`, `pages_manage_posts`, `instagram_basic`, `instagram_content_publish`, `business_management` → Generate Access Token.
-4. Cambia ese token por uno de larga duración (Access Token Debugger → Extend) y pide `GET /me/accounts`: el `access_token` de tu página **no caduca**. Ese es `FB_PAGE_TOKEN`, y el `id`, `FB_PAGE_ID`.
-5. `GET /{FB_PAGE_ID}?fields=instagram_business_account` → el `id` es `IG_USER_ID`.
+## Instagram, Facebook y más, vía Buffer (sin cuenta de desarrollador de Meta)
+Buffer publica con su propia app de Meta ya aprobada. Plan gratuito: 3 canales y API incluida.
+1. Pasa Instagram a **cuenta profesional** (Creador o Empresa). Para Facebook, crea una **página**.
+2. Crea la cuenta en buffer.com y conecta los canales (Instagram, página de Facebook, Threads...).
+3. publish.buffer.com/settings/api → *Create a new API key*.
+4. Secret: `BUFFER_API_KEY`. No hacen falta IDs: el script publica en todos los canales activos de Buffer
+   (salvo Bluesky si ya va directo). Pausa la cola de un canal en Buffer para excluirlo.
 
 ## Uso
 - Probar sin publicar: `python social/post.py --dry-run`

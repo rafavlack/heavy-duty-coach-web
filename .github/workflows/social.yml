@@ -20,9 +20,7 @@ jobs:
         env:
           BSKY_HANDLE: ${{ secrets.BSKY_HANDLE }}
           BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
-          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
-          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
-          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
       # Aunque falle una red, se guarda el avance de las que publicaron. El commit también
       # mantiene vivo el cron: GitHub lo apaga tras 60 días sin actividad en el repo.
       - if: always()

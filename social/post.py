@@ -1,9 +1,9 @@
 """Publica la siguiente entrada de social/posts.json en las redes configuradas.
 
 Lo lanza .github/workflows/social.yml. Cada red se activa si sus variables existen:
-  Bluesky:   BSKY_HANDLE, BSKY_APP_PASSWORD
-  Facebook:  FB_PAGE_ID, FB_PAGE_TOKEN
-  Instagram: IG_USER_ID, FB_PAGE_TOKEN (cuenta profesional enlazada a esa página)
+  Bluesky: BSKY_HANDLE, BSKY_APP_PASSWORD
+  Buffer:  BUFFER_API_KEY (publica en todos los canales conectados en Buffer:
+           Instagram, Facebook, Threads...; no hace falta cuenta de desarrollador de Meta)
 
   python social/post.py --check     valida posts.json sin red
   python social/post.py --dry-run   enseña lo que publicaría
@@ -14,7 +14,6 @@ import os
 import sys
 import time
 import urllib.error
-import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -22,7 +21,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SOCIAL = ROOT / "social"
 SITE = "https://heavy-duty-coach-web.rafavlack.workers.dev"
-GRAPH = "https://graph.facebook.com/v23.0"
+BUFFER = "https://api.buffer.com"
 BSKY = "https://bsky.social/xrpc"
 TAGS = {
     "es": "#HeavyDuty #MikeMentzer #EntrenamientoDeFuerza #Hipertrofia #Gimnasio #HIT",
@@ -82,10 +81,8 @@ def check(posts):
     return errors
 
 
-def request(url, data=None, headers=None, form=None):
-    if form is not None:
-        data = urllib.parse.urlencode(form).encode()
-    elif isinstance(data, (dict, list)):
+def request(url, data=None, headers=None):
+    if isinstance(data, (dict, list)):
         data = json.dumps(data).encode()
         headers = {"Content-Type": "application/json", **(headers or {})}
     req = urllib.request.Request(url, data=data, headers=headers or {})
@@ -120,34 +117,49 @@ def post_bluesky(post):
     return res["uri"]
 
 
-def post_facebook(post):
-    res = request(f"{GRAPH}/{os.environ['FB_PAGE_ID']}/photos",
-                  form={"url": card_url(post), "caption": facebook_caption(post),
-                        "access_token": os.environ["FB_PAGE_TOKEN"]})
-    return res.get("post_id") or res["id"]
+def buffer(query, variables=None):
+    res = request(BUFFER, {"query": query, "variables": variables or {}},
+                  {"Authorization": f"Bearer {os.environ['BUFFER_API_KEY']}"})
+    if res.get("errors"):  # GraphQL responde 200 aunque la consulta falle
+        raise RuntimeError(f"Buffer: {res['errors'][0].get('message')}")
+    return res["data"]
 
 
-def post_instagram(post):
-    ig, token = os.environ["IG_USER_ID"], os.environ["FB_PAGE_TOKEN"]
-    container = request(f"{GRAPH}/{ig}/media", form={
-        "image_url": card_url(post), "caption": instagram_caption(post),
-        "alt_text": post["alt"], "access_token": token})["id"]
-    # Instagram procesa la imagen en segundo plano; publicar antes de FINISHED falla.
-    for _ in range(12):
-        status = request(f"{GRAPH}/{container}?" + urllib.parse.urlencode(
-            {"fields": "status_code", "access_token": token})).get("status_code")
-        if status == "FINISHED":
-            break
-        if status == "ERROR":
-            raise RuntimeError(f"Instagram no pudo procesar {card_url(post)}")
-        time.sleep(5)
-    return request(f"{GRAPH}/{ig}/media_publish", form={"creation_id": container, "access_token": token})["id"]
+def buffer_channels():
+    orgs = buffer("{ account { organizations { id } } }")["account"]["organizations"]
+    channels = []
+    for org in orgs:
+        channels += buffer(f"{{ channels(input: {{organizationId: {json.dumps(org['id'])}}}) "
+                           "{ id service isQueuePaused } }")["channels"]
+    # Si Bluesky ya va directo, no lo dupliques desde Buffer.
+    direct = os.environ.get("BSKY_HANDLE") and os.environ.get("BSKY_APP_PASSWORD")
+    return [c for c in channels if not c["isQueuePaused"] and not (direct and c["service"] == "bluesky")]
+
+
+def post_buffer(post):
+    channels = buffer_channels()
+    if not channels:
+        raise RuntimeError("Buffer: no hay canales activos; conecta Instagram o Facebook en publish.buffer.com")
+    # Unos minutos de margen: Buffer descarga la imagen antes de publicar.
+    due = datetime.fromtimestamp(time.time() + 300, timezone.utc).isoformat().replace("+00:00", "Z")
+    done, errors = [], []
+    for c in channels:
+        text = instagram_caption(post) if c["service"] == "instagram" else facebook_caption(post)
+        res = buffer("mutation($input: CreatePostInput!) { createPost(input: $input) {"
+                     " ... on PostActionSuccess { post { id } } ... on MutationError { message } } }",
+                     {"input": {"channelId": c["id"], "text": text, "schedulingType": "automatic",
+                                "mode": "customScheduled", "dueAt": due,
+                                "assets": [{"image": {"url": card_url(post)}}]}})
+        out = res["createPost"]
+        (done if "post" in out else errors).append(f"{c['service']}:{out.get('post', {}).get('id') or out.get('message')}")
+    if errors:
+        raise RuntimeError(f"programados {done}; fallaron {errors}")
+    return f"programados para {due}: {', '.join(done)}"
 
 
 NETWORKS = {
     "bluesky": (("BSKY_HANDLE", "BSKY_APP_PASSWORD"), post_bluesky),
-    "facebook": (("FB_PAGE_ID", "FB_PAGE_TOKEN"), post_facebook),
-    "instagram": (("IG_USER_ID", "FB_PAGE_TOKEN"), post_instagram),
+    "buffer": (("BUFFER_API_KEY",), post_buffer),
 }
 
 
@@ -165,7 +177,7 @@ def main(args):
 
     if "--dry-run" in args:
         print(f"Siguiente: #{state['next']} {post['id']} -> {sorted(enabled) or 'ninguna red configurada'}")
-        print(f"\n[Bluesky]\n{bluesky_text(post)}\n\n[Facebook]\n{facebook_caption(post)}"
+        print(f"\n[Bluesky]\n{bluesky_text(post)}\n\n[Facebook, Threads...]\n{facebook_caption(post)}"
               f"\n\n[Instagram]\n{instagram_caption(post)}\n\nImagen: {card_url(post)}")
         return 0
     if not enabled:
