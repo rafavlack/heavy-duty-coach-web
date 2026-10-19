@@ -184,6 +184,12 @@ section { padding: clamp(72px, 10vw, 128px) 0; }
 .steps ul li { all: unset; display: flex; gap: 10px; color: var(--muted); font-size: 16px; }
 .steps ul li::before { content: ""; flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--volt); margin-top: 10px; }
 
+.lifts { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: clamp(40px, 6vw, 72px) 0 0; }
+.lifts figure { margin: 0; }
+.lifts img { width: 100%; height: auto; border-radius: var(--r-card); }
+.lifts figcaption { margin-top: 12px; font-size: 15px; color: var(--muted); }
+.lifts figcaption b { color: var(--text); font-weight: 600; }
+
 /* Precios */
 #precios { background: var(--s1); }
 .plans { display: grid; grid-template-columns: 1fr 1fr 1.08fr; gap: 16px; align-items: stretch; }
@@ -245,7 +251,7 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
   .steps li { grid-template-columns: 1fr; gap: 14px; }
   .steps li > ul { grid-column: 1; }
   .steps .n { font-size: 64px; }
-  .quote-wrap { grid-template-columns: 1fr; }
+  .quote-wrap, .lifts { grid-template-columns: 1fr; }
   .quote { grid-template-columns: 1fr; gap: 0; }
   .quote .mark { font-size: 90px; }
   body { font-size: 16px; }
@@ -423,6 +429,18 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
           </ul>
         </li>
       </ol>
+      <div class="lifts">
+        <figure>
+          <img src="img/press-banca.jpg" width="1024" height="682" loading="lazy" decoding="async"
+               data-i18n-alt="benchAlt" alt="Atleta tumbado en un banco plano empujando una barra cargada">
+          <figcaption data-i18n="benchCap"><b>Press de banca</b> · 1 serie · al fallo</figcaption>
+        </figure>
+        <figure>
+          <img src="img/peso-muerto.jpg" width="1024" height="682" loading="lazy" decoding="async"
+               data-i18n-alt="deadAlt" alt="Atleta agarrando una barra cargada en el suelo antes de levantar un peso muerto">
+          <figcaption data-i18n="deadCap"><b>Peso muerto</b> · 1 serie · al fallo</figcaption>
+        </figure>
+      </div>
     </div>
   </section>
 
@@ -612,6 +630,10 @@ footer { border-top: 1px solid var(--line); padding: 32px 0 40px; color: var(--m
     s2list: li(['Form guide with illustrated movement for 106 exercises', 'Log weight and reps; the app keeps your records', 'Works offline and syncs later']),
     s3: '<h3>Really recover</h3><p>The plan waits. No rewards for training days in a row, no extra sets to make up for it.</p>',
     s3list: li(['With Premium, sleep, steps and heart rate from Health Connect tune each session', 'If you plateau, the plan rotates the exercise']),
+    benchAlt: 'Athlete lying on a flat bench pressing a loaded barbell',
+    benchCap: '<b>Bench press</b> · 1 set · to failure',
+    deadAlt: 'Athlete gripping a loaded barbell on the floor before a deadlift',
+    deadCap: '<b>Deadlift</b> · 1 set · to failure',
     priceTitle: 'Free to start.<br><span class="volt">Premium</span> to stop thinking.',
     priceBody: 'The free plan is already a complete Heavy Duty routine. Premium adds the automatic plan, adaptation to your recovery and the full catalog. No auto-renewal: you pay once for the period you choose.',
     freeName: 'Free',
